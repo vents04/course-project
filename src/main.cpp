@@ -37,9 +37,9 @@ int main() {
     bool running = true;
     
     std::cout << "\n";
-    std::cout << "=================================================================\n";
-    std::cout << "        Optical Materials & Suppliers Management System        \n";
-    std::cout << "=================================================================\n";
+    std::cout << std::string(65, '=') << std::endl;
+    std::cout << "        Optical Materials & Suppliers Management System        " << std::endl;
+    std::cout << std::string(65, '=') << std::endl;
     
     while (running) {
         displayMainMenu();
