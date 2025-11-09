@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <cfloat>
 #include <string>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include "OpticalMaterial.h"
 #include "Supplier.h"
 #include "Order.h"
@@ -435,8 +438,25 @@ bool phoneNumberExists(const std::vector<Supplier>& suppliers, const std::string
 }
 
 void clearScreen() {
-    // Platform-independent screen clear (works on most terminals)
+#ifdef _WIN32
+    // Windows-specific screen clear
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hConsole != INVALID_HANDLE_VALUE) {
+        COORD coordScreen = {0, 0};
+        DWORD cCharsWritten;
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        
+        if (GetConsoleScreenBufferInfo(hConsole, &csbi)) {
+            DWORD dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+            FillConsoleOutputCharacter(hConsole, (TCHAR)' ', dwConSize, coordScreen, &cCharsWritten);
+            FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
+            SetConsoleCursorPosition(hConsole, coordScreen);
+        }
+    }
+#else
+    // Unix/Linux/Mac: Use ANSI escape codes
     std::cout << "\033[2J\033[1;1H";
+#endif
 }
 
 void pauseScreen() {
