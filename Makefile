@@ -34,6 +34,9 @@ endif
 
 # Compiler flags
 CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic -Iinclude
+CXXFLAGS_WIN = -std=c++11 -Wall -Wextra -pedantic -Iinclude
+# Force static linking of all libraries including pthread and stdc++
+LDFLAGS_WIN = -static -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lwinpthread -Wl,-Bdynamic
 
 # Project structure
 TARGET = optical_system$(EXE_EXT)
@@ -87,7 +90,7 @@ else
 endif
 
 $(TARGET_WINDOWS): $(OBJECTS_WIN)
-	$(MINGW_CXX) $(CXXFLAGS) -o $(TARGET_WINDOWS) $(OBJECTS_WIN) -static -static-libgcc -static-libstdc++
+	$(MINGW_CXX) $(CXXFLAGS) -o $(TARGET_WINDOWS) $(OBJECTS_WIN) $(LDFLAGS_WIN)
 	@echo "✓ Windows build successful! File: $(TARGET_WINDOWS)"
 
 $(BUILD_DIR_WIN)/%.o: $(SRC_DIR)/%.cpp $(wildcard $(INCLUDE_DIR)/*.h) | $(BUILD_DIR_WIN)
