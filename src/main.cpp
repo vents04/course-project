@@ -37,9 +37,9 @@ int main() {
     bool running = true;
     
     std::cout << "\n";
-    std::cout << "╔═══════════════════════════════════════════════════════════════╗\n";
-    std::cout << "║        Optical Materials & Suppliers Management System        ║\n";
-    std::cout << "╚═══════════════════════════════════════════════════════════════╝\n";
+    std::cout << "=================================================================\n";
+    std::cout << "        Optical Materials & Suppliers Management System        \n";
+    std::cout << "=================================================================\n";
     
     while (running) {
         displayMainMenu();
@@ -122,9 +122,9 @@ void addSupplier(std::vector<Supplier>& suppliers) {
         }
         
         suppliers.push_back(supplier);
-        std::cout << "\n✓ Supplier added successfully!\n";
+        std::cout << "\n[OK] Supplier added successfully!\n";
     } catch (const std::exception& e) {
-        std::cerr << "✗ Error adding supplier: " 
+        std::cerr << "[ERROR] Error adding supplier: " 
                   << e.what() << std::endl;
     }
     
@@ -135,7 +135,7 @@ void addMaterialToSupplier(std::vector<Supplier>& suppliers) {
     clearScreen();
     
     if (suppliers.empty()) {
-        std::cout << "\n✗ No suppliers available! Add a supplier first.\n";
+        std::cout << "\n[ERROR] No suppliers available! Add a supplier first.\n";
         pauseScreen();
         return;
     }
@@ -151,9 +151,9 @@ void addMaterialToSupplier(std::vector<Supplier>& suppliers) {
         OpticalMaterial material;
         std::cin >> material;
         suppliers[supplierIndex].addMaterial(material);
-        std::cout << "\n✓ Material added successfully!\n";
+        std::cout << "\n[OK] Material added successfully!\n";
     } catch (const std::exception& e) {
-        std::cerr << "✗ Error adding material: " 
+        std::cerr << "[ERROR] Error adding material: " 
                   << e.what() << std::endl;
     }
     
@@ -164,7 +164,7 @@ void displayAllSuppliers(const std::vector<Supplier>& suppliers) {
     clearScreen();
     
     if (suppliers.empty()) {
-        std::cout << "\n✗ No suppliers available!\n";
+        std::cout << "\n[ERROR] No suppliers available!\n";
         pauseScreen();
         return;
     }
@@ -182,7 +182,7 @@ void displaySupplierDetails(const std::vector<Supplier>& suppliers) {
     clearScreen();
     
     if (suppliers.empty()) {
-        std::cout << "\n✗ No suppliers available!\n";
+        std::cout << "\n[ERROR] No suppliers available!\n";
         pauseScreen();
         return;
     }
@@ -202,7 +202,7 @@ void createOrder(const std::vector<Supplier>& suppliers, std::vector<Order>& ord
     clearScreen();
     
     if (suppliers.empty()) {
-        std::cout << "\n✗ No suppliers available!\n";
+        std::cout << "\n[ERROR] No suppliers available!\n";
         pauseScreen();
         return;
     }
@@ -217,7 +217,7 @@ void createOrder(const std::vector<Supplier>& suppliers, std::vector<Order>& ord
     const Supplier& selectedSupplier = suppliers[supplierIndex];
     
     if (selectedSupplier.getMaterialCount() == 0) {
-        std::cout << "\n✗ This supplier has no available materials!\n";
+        std::cout << "\n[ERROR] This supplier has no available materials!\n";
         pauseScreen();
         return;
     }
@@ -243,11 +243,11 @@ void createOrder(const std::vector<Supplier>& suppliers, std::vector<Order>& ord
         if (choice == 0) {
             if (!order.isEmpty()) {
                 orders.push_back(order);
-                std::cout << "\n✓ Order created successfully!\n";
+                std::cout << "\n[OK] Order created successfully!\n";
                 std::cout << "Total: " << std::fixed << std::setprecision(2) 
                           << order.getTotalPrice() << " BGN\n";
             } else {
-                std::cout << "\n✗ Order is empty and will not be saved.\n";
+                std::cout << "\n[ERROR] Order is empty and will not be saved.\n";
             }
             addingItems = false;
         } else {
@@ -255,10 +255,10 @@ void createOrder(const std::vector<Supplier>& suppliers, std::vector<Order>& ord
                 OpticalMaterial material = selectedSupplier.getMaterial(choice - 1);
                 int quantity = getValidatedInt("Quantity: ", 1, 10000);
                 order.addItem(material, quantity);
-                std::cout << "✓ Material added to order!\n";
+                std::cout << "[OK] Material added to order!\n";
                 pauseScreen();
             } catch (const std::exception& e) {
-                std::cerr << "✗ Error: " << e.what() << std::endl;
+                std::cerr << "[ERROR] Error: " << e.what() << std::endl;
                 pauseScreen();
             }
         }
@@ -271,7 +271,7 @@ void displayAllOrders(const std::vector<Order>& orders) {
     clearScreen();
     
     if (orders.empty()) {
-        std::cout << "\n✗ No orders available!\n";
+        std::cout << "\n[ERROR] No orders available!\n";
         pauseScreen();
         return;
     }
@@ -311,11 +311,11 @@ void saveDataToFile(const std::vector<Supplier>& suppliers, const std::vector<Or
         }
         ordersFile.close();
         
-        std::cout << "\n✓ Data saved successfully!\n";
+        std::cout << "\n[OK] Data saved successfully!\n";
         std::cout << "  Suppliers: " << suppliers.size() << "\n";
         std::cout << "  Orders: " << orders.size() << "\n";
     } catch (const std::exception& e) {
-        std::cerr << "✗ Error saving: " << e.what() << std::endl;
+        std::cerr << "[ERROR] Error saving: " << e.what() << std::endl;
     }
     
     pauseScreen();
@@ -375,13 +375,13 @@ void loadDataFromFile(std::vector<Supplier>& suppliers, std::vector<Order>& orde
             }
             ordersFile.close();
             
-            std::cout << "\n✓ Data loaded successfully!\n";
+            std::cout << "\n[OK] Data loaded successfully!\n";
             std::cout << "  Suppliers: " << suppliers.size() << "\n";
             std::cout << "  Orders: " << orders.size() << "\n";
             pauseScreen();
         }
     } catch (const std::exception& e) {
-        std::cerr << "✗ Error loading: " << e.what() << std::endl;
+        std::cerr << "[ERROR] Error loading: " << e.what() << std::endl;
         pauseScreen();
     }
 }
@@ -441,9 +441,9 @@ int getValidatedInt(const std::string& prompt, int min, int max) {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "✗ Invalid input! Please enter a number.\n";
+            std::cout << "[ERROR] Invalid input! Please enter a number.\n";
         } else if (value < min || value > max) {
-            std::cout << "✗ Number must be between " << min << " and " << max << ".\n";
+            std::cout << "[ERROR] Number must be between " << min << " and " << max << ".\n";
         } else {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return value;
@@ -460,9 +460,9 @@ double getValidatedDouble(const std::string& prompt, double min, double max) {
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "✗ Invalid input! Please enter a number.\n";
+            std::cout << "[ERROR] Invalid input! Please enter a number.\n";
         } else if (value < min || value > max) {
-            std::cout << "✗ Number must be between " << min << " and " << max << ".\n";
+            std::cout << "[ERROR] Number must be between " << min << " and " << max << ".\n";
         } else {
             return value;
         }
