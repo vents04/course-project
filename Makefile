@@ -87,7 +87,7 @@ else
 endif
 
 $(TARGET_WINDOWS): $(OBJECTS_WIN)
-	$(MINGW_CXX) $(CXXFLAGS) -o $(TARGET_WINDOWS) $(OBJECTS_WIN) -static-libgcc -static-libstdc++
+	$(MINGW_CXX) $(CXXFLAGS) -o $(TARGET_WINDOWS) $(OBJECTS_WIN) -static -static-libgcc -static-libstdc++
 	@echo "✓ Windows build successful! File: $(TARGET_WINDOWS)"
 
 $(BUILD_DIR_WIN)/%.o: $(SRC_DIR)/%.cpp $(wildcard $(INCLUDE_DIR)/*.h) | $(BUILD_DIR_WIN)
