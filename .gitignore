@@ -1,0 +1,16 @@
+*.o
+*.obj
+
+optical_system
+*.exe
+
+build/
+
+*.dat
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
