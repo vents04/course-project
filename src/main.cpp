@@ -28,62 +28,76 @@ int getValidatedInt(const std::string& prompt, int min = INT_MIN, int max = INT_
 double getValidatedDouble(const std::string& prompt, double min = -DBL_MAX, double max = DBL_MAX);
 
 int main() {
-    std::vector<Supplier> suppliers;
-    std::vector<Order> orders;
-    
-    loadDataFromFile(suppliers, orders);
-    
-    int choice;
-    bool running = true;
-    
-    std::cout << "\n";
-    std::cout << std::string(65, '=') << std::endl;
-    std::cout << "        Optical Materials & Suppliers Management System        " << std::endl;
-    std::cout << std::string(65, '=') << std::endl;
-    
-    while (running) {
-        displayMainMenu();
-        choice = getValidatedInt("Enter choice: ", 0, 8);
+    try {
+        std::vector<Supplier> suppliers;
+        std::vector<Order> orders;
         
-        try {
-            switch (choice) {
-                case 1:
-                    addSupplier(suppliers);
-                    break;
-                case 2:
-                    addMaterialToSupplier(suppliers);
-                    break;
-                case 3:
-                    displayAllSuppliers(suppliers);
-                    break;
-                case 4:
-                    displaySupplierDetails(suppliers);
-                    break;
-                case 5:
-                    createOrder(suppliers, orders);
-                    break;
-                case 6:
-                    displayAllOrders(orders);
-                    break;
-                case 7:
-                    saveDataToFile(suppliers, orders);
-                    break;
-                case 8:
-                    loadDataFromFile(suppliers, orders);
-                    break;
-                case 0:
-                    std::cout << "\nSaving data...\n";
-                    saveDataToFile(suppliers, orders);
-                    std::cout << "Thank you for using the system!\n";
-                    running = false;
-                    break;
-                default:
-                    std::cout << "Invalid option!\n";
+        loadDataFromFile(suppliers, orders);
+        
+        int choice;
+        bool running = true;
+        
+        std::cout << "\n";
+        std::cout << std::string(65, '=') << std::endl;
+        std::cout << "        Optical Materials & Suppliers Management System        " << std::endl;
+        std::cout << std::string(65, '=') << std::endl;
+        
+        while (running) {
+            displayMainMenu();
+            choice = getValidatedInt("Enter choice: ", 0, 8);
+            
+            try {
+                switch (choice) {
+                    case 1:
+                        addSupplier(suppliers);
+                        break;
+                    case 2:
+                        addMaterialToSupplier(suppliers);
+                        break;
+                    case 3:
+                        displayAllSuppliers(suppliers);
+                        break;
+                    case 4:
+                        displaySupplierDetails(suppliers);
+                        break;
+                    case 5:
+                        createOrder(suppliers, orders);
+                        break;
+                    case 6:
+                        displayAllOrders(orders);
+                        break;
+                    case 7:
+                        saveDataToFile(suppliers, orders);
+                        break;
+                    case 8:
+                        loadDataFromFile(suppliers, orders);
+                        break;
+                    case 0:
+                        std::cout << "\nSaving data...\n";
+                        saveDataToFile(suppliers, orders);
+                        std::cout << "Thank you for using the system!\n";
+                        running = false;
+                        break;
+                    default:
+                        std::cout << "Invalid option!\n";
+                }
+            } catch (const std::exception& e) {
+                std::cerr << "[ERROR] Error: " << e.what() << std::endl;
+                pauseScreen();
             }
-        } catch (const std::exception& e) {
-            std::cerr << "Error: " << e.what() << std::endl;
-            pauseScreen();
         }
+    } catch (const std::exception& e) {
+        std::cerr << "[FATAL ERROR] " << e.what() << std::endl;
+        std::cout << "\nPress Enter to exit...";
+        std::cin.ignore();
+        std::cin.get();
+        return 1;
+    } catch (...) {
+        std::cerr << "[FATAL ERROR] Unknown error occurred!" << std::endl;
+        std::cout << "\nPress Enter to exit...";
+        std::cin.ignore();
+        std::cin.get();
+        return 1;
     }
     
     return 0;

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <cctype>
+#include <limits>
 
 void Supplier::validateBulstat(const std::string& bulstat) const {
     if (bulstat.empty()) {
@@ -180,19 +181,38 @@ std::ostream& operator<<(std::ostream& os, const Supplier& supplier) {
 std::istream& operator>>(std::istream& is, Supplier& supplier) {
     std::string bulstat, name, location, phoneNumber;
     
+    // Clear any error flags
+    is.clear();
+    
     std::cout << "Enter Bulstat (9 or 13 digits): ";
-    is >> bulstat;
+    if (!(is >> bulstat)) {
+        is.clear();
+        is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw std::runtime_error("Failed to read bulstat");
+    }
+    
+    // Clear the newline after reading bulstat
+    is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
     std::cout << "Enter company name: ";
-    is.ignore();
-    std::getline(is, name);
+    if (!std::getline(is, name)) {
+        is.clear();
+        throw std::runtime_error("Failed to read company name");
+    }
     
     std::cout << "Enter location: ";
-    std::getline(is, location);
+    if (!std::getline(is, location)) {
+        is.clear();
+        throw std::runtime_error("Failed to read location");
+    }
     
     std::cout << "Enter phone number: ";
-    std::getline(is, phoneNumber);
+    if (!std::getline(is, phoneNumber)) {
+        is.clear();
+        throw std::runtime_error("Failed to read phone number");
+    }
     
+    // Validate and set values (these will throw if invalid)
     supplier.setBulstat(bulstat);
     supplier.setName(name);
     supplier.setLocation(location);
