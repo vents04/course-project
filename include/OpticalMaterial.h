@@ -38,7 +38,6 @@ public:
     void setPrice(double price);
 
     friend std::ostream& operator<<(std::ostream& os, const OpticalMaterial& material);
-    
     friend std::istream& operator>>(std::istream& is, OpticalMaterial& material);
     
     void saveToFile(std::ostream& os) const;
